@@ -37,6 +37,8 @@ public partial class LayoutSettingsControl : UserControl
         chkAntiAliasing.DataBindings.Add("Checked", Settings, "AntiAliasing", false, DataSourceUpdateMode.OnPropertyChanged);
         chkDropShadows.DataBindings.Add("Checked", Settings, "DropShadows", false, DataSourceUpdateMode.OnPropertyChanged);
         chkRainbow.DataBindings.Add("Checked", Settings, "UseRainbowColor", false, DataSourceUpdateMode.OnPropertyChanged);
+        chkTransparentBlurBackground.DataBindings.Add("Checked", Settings, "TransparentBlurBackground", false, DataSourceUpdateMode.OnPropertyChanged);
+        chkTransparentBackground.DataBindings.Add("Checked", Settings, "TransparentBackground", false, DataSourceUpdateMode.OnPropertyChanged);
         btnTextColor.DataBindings.Add("BackColor", Settings, "TextColor", false, DataSourceUpdateMode.OnPropertyChanged);
         btnBackground.DataBindings.Add("BackColor", Settings, "BackgroundColor", false, DataSourceUpdateMode.OnPropertyChanged);
         btnBackground2.DataBindings.Add("BackColor", Settings, "BackgroundColor2", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -62,6 +64,8 @@ public partial class LayoutSettingsControl : UserControl
 
         cmbBackgroundType.SelectedItem = GetBackgroundTypeString(Settings.BackgroundType);
         originalBackgroundImage = Settings.BackgroundImage;
+        chkTransparentBackground.CheckedChanged += chkTransparentBackground_CheckedChanged;
+        chkTransparentBlurBackground.CheckedChanged += chkTransparentBlurBackground_CheckedChanged;
     }
 
     private string GetBackgroundTypeString(BackgroundType type)
@@ -183,5 +187,17 @@ public partial class LayoutSettingsControl : UserControl
     {
         chkRainbow_CheckedChanged(null, null);
         chkAntiAliasing_CheckedChanged(null, null);
+        chkTransparentBackground_CheckedChanged(null, null);
+        chkTransparentBlurBackground_CheckedChanged(null, null);
+    }
+
+    private void chkTransparentBackground_CheckedChanged(object sender, EventArgs e)
+    {
+        chkTransparentBlurBackground.Enabled = !chkTransparentBackground.Checked;
+    }
+
+    private void chkTransparentBlurBackground_CheckedChanged(object sender, EventArgs e)
+    {
+        chkTransparentBackground.Enabled = !chkTransparentBlurBackground.Checked;
     }
 }
