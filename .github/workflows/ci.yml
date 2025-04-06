@@ -54,29 +54,41 @@ jobs:
           --no-restore --no-build
           .\LiveSplit.sln
 
-      - name: Upload build as an artifact
-        uses: actions/upload-artifact@v4
+      - name: Create a release
+        id: create_release
+        uses: actions/create-release@v1
         with:
-          name: LiveSplit_Build
-          path: .\bin\Release
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          body: |
+            Automated release for Transparent LiveSplit.
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload UpdateManager.exe as an artifact
-        uses: actions/upload-artifact@v4
+      - name: Zip Transparent LiveSplit Build
+        run: 7z a Transparent_LiveSplit_Build.zip .\bin\Release\*
+
+      - name: Zip UpdateManager
+        run: 7z a UpdateManager.zip .\bin\UpdateManagerExe\*
+
+      - name: Upload Transparent LiveSplit build to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: UpdateManagerExe
-          path: .\bin\UpdateManagerExe
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: Transparent_LiveSplit_Build.zip
+          asset_name: Transparent_LiveSplit_Build.zip
+          asset_content_type: application/zip
 
-      - name: Upload build to LiveSplit.github.io
-        if: github.repository == 'LiveSplit/LiveSplit' && github.ref == 'refs/heads/master'
-        run: |
-          7z a LiveSplitDevBuild.zip .\bin\Release\*
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
-          git clone -q --branch master --single-branch "https://github.com/LiveSplit/LiveSplit.github.io.git"
-          cd LiveSplit.github.io
-          git checkout -q --orphan artifacts
-          git reset
-          mv ../LiveSplitDevBuild.zip . -force
-          git add LiveSplitDevBuild.zip
-          git commit -m "Add Development Build"
-          git push -q --force https://action:${{ secrets.DEV_BUILD_UPLOAD }}@github.com/LiveSplit/LiveSplit.github.io.git
+      - name: Upload UpdateManager.exe to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: UpdateManager.zip
+          asset_name: UpdateManager.zip
+          asset_content_type: application/octet-stream
