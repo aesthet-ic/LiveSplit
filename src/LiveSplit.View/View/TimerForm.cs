@@ -209,7 +209,7 @@ public partial class TimerForm : Form
 
     private const int ACCENT_DISABLED = 0;
     private const int ACCENT_ENABLE_BLURBEHIND = 3;
-    private const int ACCENT_ENABLE_ACRYLICBLURBEHIND = 4;
+    private const int ACCENT_ENABLE_ACRYLICBLURBEHIND = 6;
     private const int WCA_ACCENT_POLICY = 19;
 
     [StructLayout(LayoutKind.Sequential)]
