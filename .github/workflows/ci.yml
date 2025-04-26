@@ -38,14 +38,6 @@ jobs:
           -p:DebugType=None
           .\LiveSplit.sln
 
-      - name: Build UpdateManager.exe
-        run: >
-          dotnet build
-          -v m
-          -c UpdateManagerExe
-          -p:DebugType=None
-          .\src\UpdateManager\UpdateManager.csproj
-
       - name: Run tests
         run: >
           dotnet test
@@ -54,41 +46,19 @@ jobs:
           --no-restore --no-build
           .\LiveSplit.sln
 
+      - name: Zip Transparent LiveSplit Build
+        run: 7z a Transparent_LiveSplit_Build.zip .\bin\Release\*
+
       - name: Create a release
         id: create_release
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
-          release_name: Release ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
           body: |
             Automated release for Transparent LiveSplit.
           draft: false
           prerelease: false
+          files: Transparent_LiveSplit_Build.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Zip Transparent LiveSplit Build
-        run: 7z a Transparent_LiveSplit_Build.zip .\bin\Release\*
-
-      - name: Zip UpdateManager
-        run: 7z a UpdateManager.zip .\bin\UpdateManagerExe\*
-
-      - name: Upload Transparent LiveSplit build to release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: Transparent_LiveSplit_Build.zip
-          asset_name: Transparent_LiveSplit_Build.zip
-          asset_content_type: application/zip
-
-      - name: Upload UpdateManager.exe to release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: UpdateManager.zip
-          asset_name: UpdateManager.zip
-          asset_content_type: application/octet-stream
