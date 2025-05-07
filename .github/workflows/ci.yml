@@ -49,12 +49,19 @@ jobs:
       - name: Zip Transparent LiveSplit Build
         run: 7z a Transparent_LiveSplit_Build.zip .\bin\Release\*
 
-      - name: Create a release
+      - name: Delete existing tag and release
+        uses: dev-drprasad/delete-tag-and-release@v1.1
+        with:
+          tag_name: latest
+          delete_release: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create a new tag and release
         id: create_release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
+          tag_name: latest
+          name: Transparent LiveSplit
           body: |
             Automated release for Transparent LiveSplit.
           draft: false
