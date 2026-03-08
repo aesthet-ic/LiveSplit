@@ -1,4 +1,4 @@
-﻿namespace LiveSplit.View
+namespace LiveSplit.View
 {
     partial class LayoutSettingsDialog
     {
@@ -74,7 +74,7 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(490, 651);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(490, 680);
             this.tableLayoutPanel3.TabIndex = 41;
             // 
             // tabControl
@@ -84,7 +84,7 @@
             this.tabControl.Location = new System.Drawing.Point(3, 3);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(484, 616);
+            this.tabControl.Size = new System.Drawing.Size(484, 645);
             this.tabControl.TabIndex = 41;
             // 
             // LayoutSettingsDialog
@@ -92,11 +92,11 @@
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(504, 665);
+            this.ClientSize = new System.Drawing.Size(504, 694);
             this.Controls.Add(this.tableLayoutPanel3);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(520, 10000);
-            this.MinimumSize = new System.Drawing.Size(520, 674);
+            this.MinimumSize = new System.Drawing.Size(520, 703);
             this.Name = "LayoutSettingsDialog";
             this.Padding = new System.Windows.Forms.Padding(7);
             this.Text = "Layout Settings";
