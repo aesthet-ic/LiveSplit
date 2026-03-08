@@ -46,26 +46,25 @@ jobs:
           --no-restore --no-build
           .\LiveSplit.sln
 
-      - name: Zip Transparent LiveSplit Build
-        run: 7z a Transparent_LiveSplit_Build.zip .\bin\Release\*
+      - name: Get short SHA
+        id: short_sha
+        run: echo "value=$('${{ github.sha }}'.Substring(0, 7))" >> $env:GITHUB_OUTPUT
 
-      - name: Delete existing tag and release
-        uses: dev-drprasad/delete-tag-and-release@v1.1
-        with:
-          tag_name: latest
-          delete_release: true
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Zip Transparent LiveSplit
+        run: 7z a Transparent_LiveSplit_${{ steps.short_sha.outputs.value }}.zip .\bin\Release\*
 
       - name: Create a new tag and release
         id: create_release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: latest
-          name: Transparent LiveSplit
+          tag_name: ${{ steps.short_sha.outputs.value }}
+          name: Transparent LiveSplit (${{ steps.short_sha.outputs.value }})
           body: |
             Automated release for Transparent LiveSplit.
+            Commit: ${{ github.sha }}
           draft: false
           prerelease: false
-          files: Transparent_LiveSplit_Build.zip
+          make_latest: true
+          files: Transparent_LiveSplit_${{ steps.short_sha.outputs.value }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
