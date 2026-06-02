@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout LiveSplit
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: recursive
 
@@ -26,7 +26,7 @@ jobs:
         run: git checkout -b ${{ github.head_ref }} || git checkout ${{ github.head_ref }}
 
       - name: Set up .NET environment
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.x'
 
@@ -51,7 +51,7 @@ jobs:
         run: echo "value=$('${{ github.sha }}'.Substring(0, 7))" >> $env:GITHUB_OUTPUT
 
       - name: Zip Transparent LiveSplit
-        run: 7z a Transparent_LiveSplit_${{ steps.short_sha.outputs.value }}.zip .\bin\Release\*
+        run: 7z a Transparent_LiveSplit_${{ steps.short_sha.outputs.value }}.zip .\artifacts\build\release\*
 
       - name: Create a new tag and release
         id: create_release
